@@ -1,4 +1,5 @@
 const express = require("express");
+const checkMillionDollarIdea = require("./checkMillionDollarIdea");
 const {
   getAllFromDatabase,
   addToDatabase,
@@ -21,21 +22,21 @@ ideas.get("/", (req, res, next) => {
   res.status(200).send(getAllFromDatabase("ideas"));
 });
 
-ideas.post("/", (req, res, next) => {
-  const newMinion = addToDatabase("ideas", req.body);
-  res.status(201).send(newMinion);
+ideas.post("/", checkMillionDollarIdea, (req, res, next) => {
+  const newidea = addToDatabase("ideas", req.body);
+  res.status(201).send(newidea);
 });
 
 ideas.get("/:id", (req, res, next) => {
-  const minion = getFromDatabaseById("ideas", req.params.id);
-  if (minion) {
-    res.status(200).send(minion);
+  const idea = getFromDatabaseById("ideas", req.params.id);
+  if (idea) {
+    res.status(200).send(idea);
   } else {
     res.status(404).send("Not Found");
   }
 });
 
-ideas.put("/:id", (req, res, next) => {
+ideas.put("/:id", checkMillionDollarIdea, (req, res, next) => {
   const returnValue = updateInstanceInDatabase("ideas", req.body);
   res.status(200).send(returnValue);
 });

@@ -5,6 +5,7 @@ const cors = require("cors");
 module.exports = app;
 const minions = require("./server/minions");
 const ideas = require("./server/ideas");
+const meetings = require("./server/meetings");
 /* Do not change the following line! It is required for testing and allowing
  *  the frontend application to interact as planned with the api server
  */
@@ -19,7 +20,7 @@ const apiRouter = require("./server/api");
 app.use("/api", apiRouter);
 apiRouter.use("/minions", minions);
 apiRouter.use("/ideas", ideas);
-
+apiRouter.use("/meetings", meetings);
 // This conditional is here for testing purposes:
 if (!module.parent) {
   // Add your code to start the server listening at PORT below:
