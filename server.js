@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 module.exports = app;
 const minions = require("./server/minions");
+const ideas = require("./server/ideas");
 /* Do not change the following line! It is required for testing and allowing
  *  the frontend application to interact as planned with the api server
  */
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 const apiRouter = require("./server/api");
 app.use("/api", apiRouter);
 apiRouter.use("/minions", minions);
+apiRouter.use("/ideas", ideas);
 
 // This conditional is here for testing purposes:
 if (!module.parent) {
