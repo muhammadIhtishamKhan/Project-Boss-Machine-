@@ -10,10 +10,9 @@ const minions = express.Router({ mergeParams: true });
 
 minions.param("id", (req, res, next, id) => {
   const idType = isNaN(id);
-  if (idType) {
+  if (idType || !getFromDatabaseById("minions", id)) {
     res.status(404).send("Not Found");
   } else {
-    req.params.id = id;
     next();
   }
 });
@@ -23,12 +22,17 @@ minions.get("/", (req, res, next) => {
 });
 
 minions.post("/", (req, res, next) => {
-  addToDatabase("minions", req.body);
-  res.status(201);
+  const newMinion = addToDatabase("minions", req.body);
+  res.status(201).send(newMinion);
 });
 
 minions.get("/:id", (req, res, next) => {
-  res.status(200).send(getFromDatabaseById("minions", req.params.id));
+  const minion = getFromDatabaseById("minions", req.params.id);
+  if (minion) {
+    res.status(200).send(minion);
+  } else {
+    res.status(404).send("Not Found");
+  }
 });
 
 minions.put("/:id", (req, res, next) => {
@@ -38,6 +42,6 @@ minions.put("/:id", (req, res, next) => {
 
 minions.delete("/:id", (req, res, next) => {
   deleteFromDatabasebyId("minions", req.params.id);
-  res.status(200).send("Deleted");
+  res.status(204).send();
 });
 module.exports = minions;
